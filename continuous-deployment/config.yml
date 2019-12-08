@@ -1,0 +1,11 @@
+app:
+  name: backend
+  group: default
+build:
+  builder: maven
+  container: nodejs
+docker:
+  registry: docker.io
+  namespace: default
+  repository: backed
+
