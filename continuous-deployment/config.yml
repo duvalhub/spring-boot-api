@@ -6,6 +6,6 @@ build:
   container: jre
 docker:
   registry: docker.io
-  namespace: default
-  repository: backed
+  namespace: duvalhub
+  repository: spring-boot-api
 
