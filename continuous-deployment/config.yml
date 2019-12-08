@@ -3,7 +3,7 @@ app:
   group: default
 build:
   builder: maven
-  container: nodejs
+  container: jre
 docker:
   registry: docker.io
   namespace: default
