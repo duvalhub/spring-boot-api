@@ -4,6 +4,8 @@ app:
 build:
   builder: maven
   container: jre
+deploy:
+  port: 8080
 docker:
   registry: docker.io
   namespace: duvalhub
