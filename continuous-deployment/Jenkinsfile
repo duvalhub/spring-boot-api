@@ -1,5 +1,1 @@
-@Library('shared-library@feature/build-spring-boot') _
-env.PIPELINE_BRANCH = "feature/build-spring-boot"
-
-
 continuousDeployment()
