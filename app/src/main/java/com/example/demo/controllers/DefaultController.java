@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.demo.entities.DefaultEntity;
 import com.example.demo.services.DefaultService;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 
-@Data
+@AllArgsConstructor
 public class DefaultController<T extends DefaultEntity> {
 	private final DefaultService<T> service;
 
