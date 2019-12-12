@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.entities.CategoryEntity;
+import com.example.demo.entities.Category;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class EntityUtil {
 
-	public static List<CategoryEntity> generateCategoryEntities(int size) {
-		List<CategoryEntity> entities = new ArrayList<>();
+	public static List<Category> generateCategoryEntities(int size) {
+		List<Category> entities = new ArrayList<>();
 
 		for (int i = 0; i < size; i++) {
 			entities.add(generateCategoryEntity());
@@ -20,8 +20,8 @@ public class EntityUtil {
 		return entities;
 	}
 
-	public static CategoryEntity generateCategoryEntity() {
-		return CategoryEntity.builder().name(StringUtil.generateRandomChars()).build();
+	public static Category generateCategoryEntity() {
+		return Category.builder().name(StringUtil.generateRandomChars()).build();
 	}
 
 	public static String asJsonString(final Object obj) {

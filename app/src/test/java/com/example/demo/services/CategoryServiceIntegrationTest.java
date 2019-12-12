@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.entities.CategoryEntity;
+import com.example.demo.entities.Category;
 import com.example.demo.repositories.CategoryRepository;
 import com.example.demo.utils.StringUtil;
 
@@ -30,9 +30,9 @@ public class CategoryServiceIntegrationTest {
 	CategoryRepository repo;
 
 	@Autowired
-	DefaultService<CategoryEntity> categoryService;
+	DefaultService<Category> categoryService;
 
-	List<CategoryEntity> mockEntities = new ArrayList<>();
+	List<Category> mockEntities = new ArrayList<>();
 
 	@BeforeAll
 	public void before() {
@@ -41,12 +41,14 @@ public class CategoryServiceIntegrationTest {
 	@Test
 	public void findAll_withNElement_returnListNElement() {
 		// Arrange
-		CategoryEntity alex = CategoryEntity.builder().name("Alex").build();
+		Category alex = Category.builder().name("Alex")
+
+				.build();
 		mockEntities.add(alex);
 		repo.saveAll(mockEntities);
 
 		// Act
-		List<CategoryEntity> entities = categoryService.findAll();
+		List<Category> entities = categoryService.findAll();
 
 		log.info(entities.toString());
 
@@ -60,27 +62,45 @@ public class CategoryServiceIntegrationTest {
 		// Arrange
 
 		String name = StringUtil.generateRandomChars();
-		CategoryEntity categoryEntity = CategoryEntity.builder().name(name).build();
+		Category categoryEntity = Category.builder().name(name).build();
 		categoryEntity = repo.save(categoryEntity);
 
 		// Act
-		CategoryEntity foundCategory = categoryService.findById(categoryEntity.getId()).get();
+		Category foundCategory = categoryService.findById(categoryEntity.getId()).get();
 
 		// Assert
 		assertEquals(categoryEntity, foundCategory, "He did not returned elements");
 	}
 
 	@Test
+	public void readFromDB_onPrePersistedEntity_willReturnItWithAudit() {
+		// Arrange
+
+		String name = StringUtil.generateRandomChars();
+		Category categoryEntity = Category.builder().name(name).build();
+		categoryEntity = repo.save(categoryEntity);
+
+		// Act
+		Category foundCategory = categoryService.findById(categoryEntity.getId()).get();
+		log.info("Category looks like in json : {}", foundCategory.asJsonString());
+		log.info("Category looks like as tostring : {}", foundCategory.toString());
+
+		// Assert
+		assertTrue(foundCategory.getLastModifiedDate() != null, "Audit did not create LastModifiedDate");
+		assertTrue(foundCategory.getCreatedDate() != null, "Audit did not create CreatedDate");
+	}
+
+	@Test
 	public void create_onNewEntity_willCreateIt() {
 		// Arrange
 		String categoryName = "houblon";
-		CategoryEntity newCategory = CategoryEntity.builder().name(categoryName).build();
+		Category newCategory = Category.builder().name(categoryName).build();
 
 		// Act
-		CategoryEntity savedCategory = categoryService.save(newCategory);
+		Category savedCategory = categoryService.save(newCategory);
 
 		// Assert
-		CategoryEntity category = repo.findById(savedCategory.getId()).get();
+		Category category = repo.findById(savedCategory.getId()).get();
 		assertEquals(categoryName, category.getName(), "He did not returned elements");
 
 	}
@@ -88,17 +108,17 @@ public class CategoryServiceIntegrationTest {
 	@Test
 	public void save_onExistingEntity_willUpdateIt() {
 		// Arrange
-		CategoryEntity categoryEntity = CategoryEntity.builder().name(StringUtil.generateRandomChars()).build();
+		Category categoryEntity = Category.builder().name(StringUtil.generateRandomChars()).build();
 		categoryEntity = repo.save(categoryEntity);
 
 		String name = StringUtil.generateRandomChars();
 
 		// Act
-		CategoryEntity newCategory = CategoryEntity.builder().id(categoryEntity.getId()).name(name).build();
+		Category newCategory = Category.builder().id(categoryEntity.getId()).name(name).build();
 		categoryService.save(newCategory);
 
 		// Assert
-		CategoryEntity category = repo.findById(categoryEntity.getId()).get();
+		Category category = repo.findById(categoryEntity.getId()).get();
 		assertEquals(name, category.getName(), "He did not returned elements");
 
 	}
@@ -107,14 +127,14 @@ public class CategoryServiceIntegrationTest {
 	public void delete_onPresentEntity_willDeleteIt() {
 		// Arrange
 		String name = StringUtil.generateRandomChars();
-		CategoryEntity categoryEntity = CategoryEntity.builder().name(name).build();
+		Category categoryEntity = Category.builder().name(name).build();
 		categoryEntity = repo.save(categoryEntity);
 
 		// Act
 		categoryService.delete(categoryEntity.getId());
 
 		// Assert
-		Optional<CategoryEntity> opt = repo.findById(categoryEntity.getId());
+		Optional<Category> opt = repo.findById(categoryEntity.getId());
 		assertTrue(!opt.isPresent(), "He did not returned elements");
 
 	}

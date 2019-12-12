@@ -1,7 +1,7 @@
 package com.example.demo.repositories;
 
-import com.example.demo.entities.CategoryEntity;
+import com.example.demo.entities.Category;
 
-public interface CategoryRepository extends DefaultRepository<CategoryEntity> {
+public interface CategoryRepository extends DefaultRepository<Category> {
 
 }

@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.entities.CategoryEntity;
+import com.example.demo.entities.Category;
 import com.example.demo.repositories.CategoryRepository;
 import com.example.demo.utils.EntityUtil;
 import com.example.demo.utils.StringUtil;
@@ -51,7 +51,7 @@ public class CategoryControllerTest {
 	public void onRequestAll_withNElements_returnArrayOfNElements() throws Exception {
 		// Arrange
 		int size = 4;
-		List<CategoryEntity> categories = EntityUtil.generateCategoryEntities(size);
+		List<Category> categories = EntityUtil.generateCategoryEntities(size);
 		categories = repo.saveAll(categories);
 
 		// Act
@@ -75,7 +75,7 @@ public class CategoryControllerTest {
 	public void onRequestById_withExistingElement_returnElement() throws Exception {
 		// Arrange
 		String name = StringUtil.generateRandomChars();
-		CategoryEntity entity = CategoryEntity.builder().name(name).build();
+		Category entity = Category.builder().name(name).build();
 		entity = repo.save(entity);
 
 		// Act
@@ -98,7 +98,7 @@ public class CategoryControllerTest {
 	@Test
 	public void onCreate_withValidElement_createElement() throws Exception {
 		// Arrange
-		CategoryEntity mockEntity = EntityUtil.generateCategoryEntity();
+		Category mockEntity = EntityUtil.generateCategoryEntity();
 
 		// Act
 		MvcResult mvcResult = mockMvc
@@ -106,11 +106,11 @@ public class CategoryControllerTest {
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 		String json = mvcResult.getResponse().getContentAsString();
-		CategoryEntity returnedEntity = (CategoryEntity) EntityUtil.convertJSONStringToObject(json,
-				CategoryEntity.class);
+		Category returnedEntity = (Category) EntityUtil.convertJSONStringToObject(json,
+				Category.class);
 
 		// Assert
-		CategoryEntity entity = repo.findById(returnedEntity.getId()).get();
+		Category entity = repo.findById(returnedEntity.getId()).get();
 		assertEquals(mockEntity.getName(), entity.getName(), "Post by id is misimplemented");
 
 	}
@@ -118,7 +118,7 @@ public class CategoryControllerTest {
 	@Test
 	public void onCreate_withInValidElement_return400() throws Exception {
 		// Arrange
-		CategoryEntity mockEntity = CategoryEntity.builder().build();
+		Category mockEntity = Category.builder().build();
 
 		// Act
 		// Assert
@@ -131,7 +131,7 @@ public class CategoryControllerTest {
 	@Test
 	public void onUpdate_withValidElement_createElement() throws Exception {
 		// Arrange
-		CategoryEntity mockEntity = EntityUtil.generateCategoryEntity();
+		Category mockEntity = EntityUtil.generateCategoryEntity();
 		Long id = repo.save(EntityUtil.generateCategoryEntity()).getId();
 		mockEntity.setName(StringUtil.generateRandomChars());
 		Long randomLong = new Random().nextLong();
@@ -143,7 +143,7 @@ public class CategoryControllerTest {
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 		// Assert
-		CategoryEntity entity = repo.findById(id).get();
+		Category entity = repo.findById(id).get();
 		assertEquals(mockEntity.getName(), entity.getName(), "Post by id is misimplemented");
 
 	}
@@ -151,7 +151,7 @@ public class CategoryControllerTest {
 	@Test
 	public void onUpdate_withInValidElement_return400() throws Exception {
 		// Arrange
-		CategoryEntity mockEntity = CategoryEntity.builder().build();
+		Category mockEntity = Category.builder().build();
 
 		// Act
 		// Assert
@@ -165,7 +165,7 @@ public class CategoryControllerTest {
 	@Test
 	public void onDelete_withValidElement_deleteIt() throws Exception {
 		// Arrange
-		CategoryEntity mockEntity = EntityUtil.generateCategoryEntity();
+		Category mockEntity = EntityUtil.generateCategoryEntity();
 		mockEntity = repo.save(mockEntity);
 
 		// Act
@@ -174,7 +174,7 @@ public class CategoryControllerTest {
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 		// Assert
-		Optional<CategoryEntity> opt = repo.findById(mockEntity.getId());
+		Optional<Category> opt = repo.findById(mockEntity.getId());
 		assertTrue(!opt.isPresent(), "Entity was not well deleted");
 
 	}
