@@ -1,0 +1,10 @@
+spring.mail:
+ host: smtp.ethereal.email
+ properties.mail:
+  transport.protocol: smtp
+  smtp:
+   port: 587
+   auth: true
+   starttls:
+    enable: true
+    required: true
