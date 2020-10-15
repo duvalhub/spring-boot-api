@@ -20,6 +20,10 @@ public class EntityUtil {
 		return entities;
 	}
 
+	public static <T> Category generateEntity(T t) {
+		return Category.builder().name(StringUtil.generateRandomChars()).build();
+	}
+
 	public static Category generateCategoryEntity() {
 		return Category.builder().name(StringUtil.generateRandomChars()).build();
 	}

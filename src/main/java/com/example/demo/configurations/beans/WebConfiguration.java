@@ -1,4 +1,4 @@
-package com.example.demo.configurations;
+package com.example.demo.configurations.beans;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

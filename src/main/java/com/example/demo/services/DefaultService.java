@@ -3,14 +3,11 @@ package com.example.demo.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
 import com.example.demo.entities.DefaultEntity;
 import com.example.demo.repositories.DefaultRepository;
 
 import lombok.Data;
 
-@Service
 @Data
 public class DefaultService<T extends DefaultEntity> {
 
